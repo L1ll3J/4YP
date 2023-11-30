@@ -1,0 +1,7 @@
+wandb/
+
+Run/wandb/
+
+**/.idea/
+
+venv/
