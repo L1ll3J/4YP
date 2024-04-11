@@ -161,6 +161,27 @@ if __name__ == "__main__":
 
     """ Data augmentation"""
     # set to True to increase training dataset, thus to recude overfitting
-    augment_data(train_x, train_y, "C:/Users/Josh/Desktop/4YP/Processed_Data/train/", augment=True)
+    #augment_data(train_x, train_y, "C:/Users/Josh/Desktop/4YP/Processed_Data/train/", augment=True)
     #augment_data(val_x, val_y, "C:/Users/Josh/Desktop/4YP/Processed_Data/val/", augment=False)
     #augment_data(test_x, test_y, "C:/Users/Josh/Desktop/4YP/Processed_Data/test/", augment=False)
+
+    #-------------------------------------------------------------------------------------------------------
+
+    datasets = ["REFUGE1test", "DRISHI", "G1020", "ORIGA", "PAPILA"]
+
+    for dataset in datasets:
+        create_dir(f'C:/Users/Josh/Desktop/4YP/Datasets/AUGMENTED/{dataset}/image')
+        create_dir(f"C:/Users/Josh/Desktop/4YP/Datasets/AUGMENTED/{dataset}/mask")
+
+        source_x = f'C:/Users/Josh/Desktop/4YP/Datasets/RAW/Kaggle/Labelled/{dataset}/images'
+        source_y = f'C:/Users/Josh/Desktop/4YP/Datasets/RAW/Kaggle/Labelled/{dataset}/masks/both'
+
+        if dataset == "REFUGE1test":
+            train_x = sorted(glob(os.path.join(source_x, '*.jpg')))
+        else:
+            train_x = sorted(glob(os.path.join(source_x, '*.png')))
+
+        train_y = sorted(glob(os.path.join(source_y, '*.bmp')))
+
+        augment_data(train_x, train_y, f'C:/Users/Josh/Desktop/4YP/Datasets/AUGMENTED/{dataset}/', augment=True)
+
