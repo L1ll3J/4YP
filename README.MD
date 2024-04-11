@@ -19,6 +19,7 @@ https://www.kaggle.com/datasets/deathtrooper/multichannel-glaucoma-benchmark-dat
 The format for each labelled database should be:
 
 Labelled/*dataset_name*/images                       - images go here
+
 Labelled/*dataset_name*/masks/both                   - segmentation masks go here
 
 
@@ -86,7 +87,7 @@ In addition to this, it is important to modify the ```data_save_path``` variable
 
 After running one of the programs, this location will contain: the saved model - which can be restored at a later date using ```torch.load()``` and some example segmentations so that you can visualise performance.
 
-### To modify this code:
+# To modify this code:
 A lot of functions/classes are repeated across programs and so have been stored in custom modules.
 
 The largest and most important custom module is:
