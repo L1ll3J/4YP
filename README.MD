@@ -17,10 +17,13 @@ We used data from SMDG, A Standardized Fundus Glaucoma Dataset. Download the dat
 https://www.kaggle.com/datasets/deathtrooper/multichannel-glaucoma-benchmark-dataset
 
 The format for each labelled database should be:
+
 Labelled/*dataset_name*/images                       - images go here
 Labelled/*dataset_name*/masks/both                   - segmentation masks go here
 
+
 And for unlabelled:
+
 Unlabelled/*dataset_name*/images                     - images go here
 
 
@@ -31,7 +34,8 @@ python3 4YP/Run/data_aug/combine_cup_and_disk.py
 ```
 ### Format:
 Each experiment is contained within it's own program to facilitate re-producability. 
-All programs are wrapped using wandb's sweep function, parameters can be adjusted by modifying the sweep_config variable.
+
+All programs are wrapped using wandb's sweep function, parameters can be adjusted by modifying the ```sweep_config``` variable.
 
 There are 3 main experiments; the baseline U-Net, FixMatch & the Adversarial network.
 
@@ -86,9 +90,9 @@ After running one of the programs, this location will contain: the saved model -
 A lot of functions/classes are repeated across programs and so have been stored in custom modules.
 
 The largest and most important custom module is:
-4YP/Run/utils.py
+```4YP/Run/utils.py```
 
 Every main program uses functions from this module and so care should be taken when making modifications as this will effect all programs.
 
 In addition to this, the base U-Net architecture can be found at:
-4YP/Run/UNET/UNet_model.py
+```4YP/Run/UNET/UNet_model.py```
