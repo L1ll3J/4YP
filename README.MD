@@ -18,16 +18,15 @@ https://www.kaggle.com/datasets/deathtrooper/multichannel-glaucoma-benchmark-dat
 
 The format for each <ins>labelled database</ins> should be:
 
-Labelled/*dataset_name*/images                       - images go here
+Labelled/*dataset_name*/images                       - (images go here)
 
-Labelled/*dataset_name*/masks/both                   - segmentation masks go here
+Labelled/*dataset_name*/masks/both                   - (segmentation masks go here)
 
 
 And for <ins>unlabelled</ins>:
 
-Unlabelled/*dataset_name*/images                     - images go here
-
-
+Unlabelled/*dataset_name*/images                     - (images go here)
+</br>
 NOTE: The provided labelled segmentation masks are seperated into Optic Cup & Optic Disk, for our purposes we want these combined.
 This can be done using:
 ```
