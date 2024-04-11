@@ -16,14 +16,14 @@ We used data from SMDG, A Standardized Fundus Glaucoma Dataset. Download the dat
 
 https://www.kaggle.com/datasets/deathtrooper/multichannel-glaucoma-benchmark-dataset
 
-The format for each labelled database should be:
+The format for each <ins>labelled database</ins> should be:
 
 Labelled/*dataset_name*/images                       - images go here
 
 Labelled/*dataset_name*/masks/both                   - segmentation masks go here
 
 
-And for unlabelled:
+And for <ins>unlabelled</ins>:
 
 Unlabelled/*dataset_name*/images                     - images go here
 
