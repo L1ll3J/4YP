@@ -27,6 +27,8 @@ And for <ins>unlabelled</ins>:
 
 Unlabelled/*dataset_name*/images                     - (images go here)
 </br>
+
+
 NOTE: The provided labelled segmentation masks are seperated into Optic Cup & Optic Disk, for our purposes we want these combined.
 This can be done using:
 ```
