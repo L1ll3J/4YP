@@ -1,7 +1,7 @@
-# Transformer Research for Medical Image Segmentation
+# Research for Unsupervised Domain Generalisation in Medical Image Segmentation
 
 ### GitHub Repository
-https://github.com/DiDiDD/REFUGE_4YP.git
+https://github.com/L1ll3J/4YP
 
 
 ### Requirements
@@ -9,57 +9,86 @@ Install all the packages required by running:
 ```
 pip install -r requirements.txt
 ```
-
+Exact environments are also included
 
 ### Data
-We used data from REFUGE Challenge (Retinal Fundus Glaucoma Challenge). Download the data from: 
+We used data from SMDG, A Standardized Fundus Glaucoma Dataset. Download the data from: 
 
-https://refuge.grand-challenge.org/Home2020/
+https://www.kaggle.com/datasets/deathtrooper/multichannel-glaucoma-benchmark-dataset
 
-Merge the data in train/val/test if the images/masks are separated into Glaucoma and Non-Glaucoma.
+The format for each labelled database should be:
+Labelled/*dataset_name*/images                       - images go here
+Labelled/*dataset_name*/masks/both                   - segmentation masks go here
+
+And for unlabelled:
+Unlabelled/*dataset_name*/images                     - images go here
 
 
-### Data processing
-Firstly run:
+NOTE: The provided labelled segmentation masks are seperated into Optic Cup & Optic Disk, for our purposes we want these combined.
+This can be done using:
 ```
-python3 REFUGE_4YP/Run/data_aug/data_aug.py
+python3 4YP/Run/data_aug/combine_cup_and_disk.py
 ```
-Note: Change the code from line 81 - 87 to match the path to the merged data folder you specified.
+### Format:
+Each experiment is contained within it's own program to facilitate re-producability. 
+All programs are wrapped using wandb's sweep function, parameters can be adjusted by modifying the sweep_config variable.
 
-The other data augmentation files located in the 'data_aug' folder serve the purpose of investigating the model's robustness.
-
-
-
-### To train models:
-```python3 Model_train.py  {float: learning rate}  {int: batch size}  {int: GPU index}  {str: 'model name'} {str: Normalisation Name}```\
-eg:
-```
-cd REFUGE _4YP/Run
-python3 Model_train.py 5e-5 15 1 'unet' 'batch' 
-```
+There are 3 main experiments; the baseline U-Net, FixMatch & the Adversarial network.
 
 
-### To test models:
-```python3 Model_test.py {int: test data number} {float: learning rate}  {int: batch size}  {int: GPU index}  {str: 'model name'}  {str: Normalisation Name} ```\
-eg:
+### Baseline U-Net:
+
+To run without data augmentation:
 ```
 cd REFUGE _4YP/Run
-python3 Model_test.py 1 5e-5 15 1 'unet' 'batch' 
+python3 BaseLine_NoAugmentation.py
+```
+
+To run with online "live" augmentation:
+```
+cd REFUGE _4YP/Run
+python3 BaseLine_LiveAugmentation.py
+```
+
+### FixMatch:
+The FixMatch paper can be found at:
+
+https://arxiv.org/abs/2001.07685
+
+FixMatch.py is mostly an artifact, but can be used for debugging on a single database.
+
+FixMatchMulti.py is the main program, simply adjust file paths and use:
+```
+cd REFUGE _4YP/Run
+python3 FixMatchMulti.py
 ```
 
 
-# On Machine
-The augmented data is located in Desktop/new_data/
+### Adversarial Network
+The conventional implementation of the adversarial network for Unsupervised Domain Adaptation (UDA) (single source / single target) is found in AdvNetwork_Outputs_UDAstyle.py
 
-The GitHub repository clone is located in Desktop/REFUGE_4YP/
+The adapted implementation of the adversarial network for Unsupervised Domain Generalisation (UDG) (single source / multi target) is found in AdvNetwork_Outputs_FMstyle.py
 
-The results (checkpoints, test scores, prediction masks) are located in Desktop/new_data/test/
-
-### To check results:
-Step into one of the folders in Desktop/new_data/test/ and select which test set. \
-eg:
+Both can be run using the same approach as for the baseline U-Net and FixMatch. (no external args required)
+# Saving & Results
+Currently, since wandb is used, all training metrics / results are logged using the API and can be access using a free Weights and Biases account. Once you're account and environment are configured, use:
 ```
-cd Desktop/new_data/test/1600_unet_batch_lr_5e-05_bs_15_fs_12/results0
+wandb.login()
 ```
-The prediction mask shall be observed and test scores is in 'npy' file for the test set.
+And provide your API key when prompted.
 
+In addition to this, it is important to modify the ```data_save_path``` variable to ensure you are saving to the correct location. This variable is found twice in every main program, always at the start of the ```train()``` and ```test()``` functions. 
+(Make sure to change both!)
+
+After running one of the programs, this location will contain: the saved model - which can be restored at a later date using ```torch.load()``` and some example segmentations so that you can visualise performance.
+
+### To modify this code:
+A lot of functions/classes are repeated across programs and so have been stored in custom modules.
+
+The largest and most important custom module is:
+4YP/Run/utils.py
+
+Every main program uses functions from this module and so care should be taken when making modifications as this will effect all programs.
+
+In addition to this, the base U-Net architecture can be found at:
+4YP/Run/UNET/UNet_model.py
